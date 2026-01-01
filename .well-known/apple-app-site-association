@@ -1,0 +1,18 @@
+{
+    "applinks": {
+        "apps": [],
+        "details": [
+            {
+                "appID": "R49R583W8Q.com.javi.TUSApp.Clip",
+                "paths": [ "/busgo-web/stop", "/busgo-web/stop/*" ]
+            },
+            {
+                "appID": "R49R583W8Q.com.javi.TUSApp",
+                "paths": [ "/busgo-web/stop", "/busgo-web/stop/*" ]
+            }
+        ]
+    },
+    "appclips": {
+        "apps": ["R49R583W8Q.com.javi.TUSApp.Clip"]
+    }
+}
