@@ -1,150 +1,465 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta name="description" content="SHADE: Tu armario virtual inteligente. Organiza, combina y descubre tu mejor estilo.">
-    <title>SHADE | Tu Armario Inteligente</title>
-    <style>
-        :root {
-            --bg-color: #ffffff;
-            --text-main: #111111;
-            --text-secondary: #666666;
-            --accent-color: #000000;
-            --button-text: #ffffff;
-        }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <meta name="description" content="SHADE: Tu armario inteligente. Organiza tu ropa, crea outfits con IA, planifica la semana y descubre tu mejor estilo." />
+  <meta property="og:title" content="SHADE — Tu Armario Inteligente" />
+  <meta property="og:description" content="Organiza tu ropa, crea looks con IA y descubre tu estilo." />
+  <title>SHADE | Tu Armario Inteligente</title>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --blue-deep:   #0a1628;
+      --blue-accent: #2563eb;
+      --blue-bright: #3b82f6;
+      --blue-light:  #60a5fa;
+      --blue-pale:   #bfdbfe;
+      --blue-glass:  rgba(37,99,235,0.12);
+      --white-dim:   rgba(255,255,255,0.75);
+      --text-muted:  rgba(255,255,255,0.55);
+      --radius:      18px;
+      --radius-lg:   28px;
+      --ease-back:   cubic-bezier(0.34,1.56,0.64,1);
+    }
+    html { scroll-behavior: smooth; }
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Display', 'Segoe UI', sans-serif;
+      background: var(--blue-deep);
+      color: rgba(255,255,255,0.92);
+      overflow-x: hidden;
+      line-height: 1.6;
+    }
+    body::before {
+      content: '';
+      position: fixed;
+      inset: 0;
+      background:
+        radial-gradient(ellipse 80% 60% at 20% 10%, rgba(37,99,235,0.22) 0%, transparent 60%),
+        radial-gradient(ellipse 60% 80% at 80% 90%, rgba(14,116,144,0.15) 0%, transparent 60%),
+        radial-gradient(ellipse 40% 40% at 60% 40%, rgba(99,102,241,0.1) 0%, transparent 60%);
+      pointer-events: none;
+      z-index: 0;
+    }
+    .page { position: relative; z-index: 1; }
 
-        body {
-            font-family: -apple-system, BlinkMacSystemFont, "SF Pro Display", "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
-            background-color: var(--bg-color);
-            color: var(--text-main);
-            margin: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            min-height: 100vh;
-            padding: 20px;
-            text-align: center;
-        }
+    /* HERO */
+    .hero {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 60px 24px 80px;
+    }
+    .hero-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 7px;
+      background: var(--blue-glass);
+      border: 1px solid rgba(59,130,246,0.3);
+      border-radius: 100px;
+      padding: 6px 16px;
+      font-size: 12px;
+      font-weight: 600;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--blue-light);
+      margin-bottom: 32px;
+      opacity: 0;
+      animation: fadeUp 0.7s 0.2s var(--ease-back) forwards;
+    }
+    .hero-badge::before {
+      content: '';
+      width: 7px; height: 7px;
+      border-radius: 50%;
+      background: var(--blue-bright);
+      box-shadow: 0 0 8px var(--blue-bright);
+    }
+    .hero-title {
+      font-size: clamp(52px, 14vw, 100px);
+      font-weight: 800;
+      letter-spacing: -0.04em;
+      line-height: 0.92;
+      background: linear-gradient(135deg, #fff 30%, var(--blue-light) 70%, var(--blue-pale) 100%);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      margin-bottom: 24px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.35s var(--ease-back) forwards;
+    }
+    .hero-sub {
+      font-size: clamp(17px, 3.5vw, 22px);
+      color: var(--white-dim);
+      font-weight: 400;
+      max-width: 480px;
+      margin-bottom: 48px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.5s var(--ease-back) forwards;
+    }
+    .hero-sub strong { color: #fff; font-weight: 600; }
+    .cta-primary {
+      display: inline-flex;
+      align-items: center;
+      gap: 10px;
+      background: linear-gradient(135deg, var(--blue-accent) 0%, #1d4ed8 100%);
+      color: #fff;
+      font-size: 17px;
+      font-weight: 700;
+      padding: 17px 36px;
+      border-radius: 100px;
+      text-decoration: none;
+      box-shadow: 0 8px 32px rgba(37,99,235,0.45), 0 0 0 1px rgba(255,255,255,0.08);
+      transition: transform 0.18s var(--ease-back), box-shadow 0.18s ease;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.65s var(--ease-back) forwards;
+    }
+    .cta-primary:hover {
+      transform: translateY(-3px) scale(1.03);
+      box-shadow: 0 14px 40px rgba(37,99,235,0.6), 0 0 0 1px rgba(255,255,255,0.12);
+    }
+    .cta-primary svg { width: 22px; height: 22px; fill: currentColor; }
+    .hero-scroll {
+      margin-top: 60px;
+      opacity: 0;
+      animation: fadeUp 0.8s 0.9s ease forwards;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 8px;
+      color: var(--text-muted);
+      font-size: 13px;
+    }
+    .scroll-dot {
+      width: 22px; height: 36px;
+      border: 1.5px solid rgba(255,255,255,0.2);
+      border-radius: 11px;
+      display: flex; align-items: flex-start; justify-content: center;
+      padding-top: 6px;
+    }
+    .scroll-dot::after {
+      content: '';
+      width: 4px; height: 8px;
+      background: var(--blue-light);
+      border-radius: 2px;
+      animation: scrollBounce 2s infinite;
+    }
 
-        .container {
-            max-width: 600px;
-            width: 100%;
-            animation: fadeIn 1s ease-out;
-        }
+    /* STATS */
+    .stats-section { padding: 0 24px 80px; }
+    .stats-grid {
+      max-width: 680px;
+      margin: 0 auto;
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 16px;
+    }
+    .stat-card {
+      background: var(--blue-glass);
+      border: 1px solid rgba(59,130,246,0.2);
+      border-radius: var(--radius);
+      padding: 28px 20px;
+      text-align: center;
+    }
+    .stat-number {
+      font-size: clamp(28px, 7vw, 40px);
+      font-weight: 800;
+      background: linear-gradient(135deg, #fff, var(--blue-light));
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      line-height: 1;
+      margin-bottom: 6px;
+    }
+    .stat-label { font-size: 13px; color: var(--text-muted); font-weight: 500; }
 
-        /* Logo / Icono Simulado */
-        .logo {
-            font-size: 80px;
-            font-weight: 800;
-            margin-bottom: 10px;
-            letter-spacing: -2px;
-            background: linear-gradient(135deg, #333 0%, #000 100%);
-            -webkit-background-clip: text;
-            -webkit-text-fill-color: transparent;
-            display: inline-block;
-        }
+    /* WARDROBE ACCORDION */
+    .wardrobe-section { padding: 40px 24px 100px; }
+    .section-label {
+      font-size: 12px; font-weight: 700; letter-spacing: 0.12em;
+      text-transform: uppercase; color: var(--blue-light);
+      text-align: center; margin-bottom: 16px;
+    }
+    .section-title {
+      font-size: clamp(28px, 6vw, 42px); font-weight: 800;
+      letter-spacing: -0.02em; text-align: center;
+      margin-bottom: 12px; line-height: 1.1;
+    }
+    .section-desc {
+      text-align: center; color: var(--text-muted); font-size: 16px;
+      margin-bottom: 56px; max-width: 460px; margin-left: auto; margin-right: auto;
+    }
+    .wardrobe { max-width: 680px; margin: 0 auto; display: flex; flex-direction: column; gap: 12px; }
+    .drawer {
+      background: rgba(255,255,255,0.04);
+      border: 1px solid rgba(255,255,255,0.08);
+      border-radius: var(--radius);
+      overflow: hidden;
+      transition: border-color 0.25s ease, background 0.25s ease;
+    }
+    .drawer.open { background: rgba(255,255,255,0.07); border-color: rgba(59,130,246,0.4); }
+    .drawer-header {
+      display: flex; align-items: center; gap: 16px;
+      padding: 20px 22px; cursor: pointer; user-select: none;
+      -webkit-tap-highlight-color: transparent;
+    }
+    .drawer-icon {
+      width: 44px; height: 44px; border-radius: 12px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 22px; flex-shrink: 0;
+      background: var(--blue-glass); border: 1px solid rgba(59,130,246,0.2);
+      transition: transform 0.2s var(--ease-back);
+    }
+    .drawer.open .drawer-icon { transform: scale(1.1); }
+    .drawer-title { flex: 1; font-size: 17px; font-weight: 700; color: #fff; }
+    .drawer-subtitle { font-size: 13px; font-weight: 400; color: var(--text-muted); margin-top: 2px; }
+    .drawer-chevron {
+      width: 24px; height: 24px; color: var(--text-muted);
+      transition: transform 0.35s var(--ease-back), color 0.2s ease;
+      flex-shrink: 0;
+    }
+    .drawer.open .drawer-chevron { transform: rotate(180deg); color: var(--blue-light); }
+    .drawer-body { max-height: 0; overflow: hidden; transition: max-height 0.5s cubic-bezier(0.4,0,0.2,1); }
+    .drawer.open .drawer-body { max-height: 600px; }
+    .drawer-inner {
+      padding: 0 22px 22px 82px;
+      transform: translateY(-8px); opacity: 0;
+      transition: transform 0.4s 0.05s var(--ease-back), opacity 0.35s 0.05s ease;
+    }
+    .drawer.open .drawer-inner { transform: translateY(0); opacity: 1; }
+    .drawer-inner p { color: var(--white-dim); font-size: 15px; line-height: 1.65; margin-bottom: 14px; }
+    .feature-pills { display: flex; flex-wrap: wrap; gap: 8px; margin-top: 4px; }
+    .pill {
+      background: var(--blue-glass); border: 1px solid rgba(59,130,246,0.25);
+      border-radius: 100px; padding: 5px 13px; font-size: 12px;
+      font-weight: 600; color: var(--blue-pale);
+    }
 
-        h1 {
-            font-size: 24px;
-            font-weight: 600;
-            margin: 0 0 15px 0;
-            color: var(--text-main);
-        }
+    /* FINAL CTA */
+    .final-cta { padding: 60px 24px 100px; text-align: center; }
+    .cta-card {
+      max-width: 560px; margin: 0 auto;
+      background: linear-gradient(135deg, rgba(37,99,235,0.18) 0%, rgba(14,116,144,0.12) 100%);
+      border: 1px solid rgba(59,130,246,0.3);
+      border-radius: var(--radius-lg); padding: 56px 40px;
+      position: relative; overflow: hidden;
+    }
+    .cta-card::before {
+      content: ''; position: absolute; top: -80px; right: -80px;
+      width: 260px; height: 260px; border-radius: 50%;
+      background: radial-gradient(circle, rgba(59,130,246,0.15), transparent 70%);
+      pointer-events: none;
+    }
+    .cta-card-title { font-size: clamp(24px, 5vw, 34px); font-weight: 800; letter-spacing: -0.02em; line-height: 1.15; margin-bottom: 16px; }
+    .cta-card-desc { color: var(--white-dim); font-size: 16px; margin-bottom: 36px; max-width: 360px; margin-left: auto; margin-right: auto; }
+    .cta-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      background: rgba(255,255,255,0.06); border: 1px solid rgba(255,255,255,0.1);
+      border-radius: 100px; padding: 5px 14px; font-size: 12px;
+      color: var(--text-muted); margin-top: 20px;
+    }
 
-        p {
-            font-size: 17px;
-            line-height: 1.5;
-            color: var(--text-secondary);
-            margin-bottom: 40px;
-            max-width: 480px;
-            margin-left: auto;
-            margin-right: auto;
-        }
+    /* FOOTER */
+    footer { padding: 32px 24px; text-align: center; border-top: 1px solid rgba(255,255,255,0.06); color: var(--text-muted); font-size: 13px; }
+    footer a { color: var(--text-muted); text-decoration: none; }
+    footer a:hover { color: var(--blue-light); }
 
-        /* Botón estilo App Store */
-        .app-store-btn {
-            display: inline-flex;
-            align-items: center;
-            justify-content: center;
-            background-color: #000;
-            color: #fff;
-            padding: 12px 24px;
-            border-radius: 40px;
-            text-decoration: none;
-            font-weight: 600;
-            font-size: 16px;
-            transition: transform 0.2s, box-shadow 0.2s;
-            box-shadow: 0 4px 14px rgba(0,0,0,0.2);
-        }
+    /* ANIMATIONS */
+    @keyframes fadeUp { from { opacity: 0; transform: translateY(24px); } to { opacity: 1; transform: translateY(0); } }
+    @keyframes scrollBounce { 0%, 100% { transform: translateY(0); opacity: 1; } 60% { transform: translateY(10px); opacity: 0.3; } }
+    .reveal { opacity: 0; transform: translateY(32px); transition: opacity 0.7s ease, transform 0.7s var(--ease-back); }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
 
-        .app-store-btn:hover {
-            transform: scale(1.02);
-            box-shadow: 0 6px 20px rgba(0,0,0,0.3);
-        }
-
-        .app-store-btn svg {
-            width: 20px;
-            height: 20px;
-            margin-right: 10px;
-            fill: white;
-        }
-
-        /* Footer y Link Legal */
-        .footer {
-            margin-top: 60px;
-            font-size: 13px;
-            color: #999;
-            border-top: 1px solid #eee;
-            padding-top: 20px;
-        }
-
-        .footer a {
-            color: #999;
-            text-decoration: none;
-            margin: 0 10px;
-            transition: color 0.2s;
-        }
-
-        .footer a:hover {
-            color: #333;
-            text-decoration: underline;
-        }
-
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
-        }
-    </style>
+    @media (max-width: 480px) {
+      .stats-grid { gap: 10px; }
+      .stat-card { padding: 20px 12px; }
+      .drawer-inner { padding-left: 22px; }
+      .cta-card { padding: 40px 24px; }
+    }
+  </style>
 </head>
 <body>
+<div class="page">
 
-    <div class="container">
-        <div class="logo">SHADE</div>
-
-        <h1>Tu estilo, organizado.</h1>
-
-        <p>
-            Gestiona tu armario, crea outfits y mantén tu ropa bajo control. 
-            La herramienta definitiva para los amantes de la moda.
-        </p>
-
-        <a href="https://apps.apple.com/es/app/shade/id6754871627" class="app-store-btn">
-            <svg viewBox="0 0 384 512">
-                <path d="M318.7 268.7c-.2-36.7 16.4-64.4 50-84.8-18.8-26.9-47.2-41.7-84.7-44.6-35.5-2.8-74.3 20.7-88.5 20.7-15 0-49.4-19.7-76.4-19.7C63.3 141.2 4 184.8 4 273.5q0 39.3 14.4 81.2c12.8 36.7 46.9 99.2 82.8 99.2 25.7 0 36.8-17 68.7-17.7 31.5-.7 44.8 18.2 71.9 18.2 28 0 57.5-62.8 74.5-89.2-22.7-10.7-42.3-33-42.3-76.3zm-79.5-129c20.5-26.6 33-59.5 28.5-95.2-25.5 1.5-59.1 17.8-77.9 41-16.7 20.4-29.4 51.5-26.2 88.5 28.8 2.2 55.4-18.3 75.6-34.3z"/>
-            </svg>
-            Descargar en App Store
-        </a>
-
-        <div class="footer">
-            <p>&copy; 2026 SHADE. Todos los derechos reservados.</p>
-            <div>
-                <a href="mailto:pantallas-suelda-5k@icloud.com">Soporte</a> |
-                <a href="app-ads.txt">app-ads.txt</a>
-            </div>
-        </div>
+  <section class="hero">
+    <div class="hero-badge">Tu armario inteligente</div>
+    <h1 class="hero-title">SHADE</h1>
+    <p class="hero-sub">Organiza tu ropa, crea outfits con <strong>IA</strong> y descubre el estilo que llevas dentro.</p>
+    <a class="cta-primary" href="https://apps.apple.com/es/app/shade/id6754871627" target="_blank" rel="noopener">
+      <svg viewBox="0 0 24 24"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+      Descargar gratis
+    </a>
+    <div class="hero-scroll">
+      <div class="scroll-dot"></div>
+      Descubre todo
     </div>
+  </section>
 
+  <div class="stats-section">
+    <div class="stats-grid reveal">
+      <div class="stat-card"><div class="stat-number">100+</div><div class="stat-label">Categorias de ropa</div></div>
+      <div class="stat-card"><div class="stat-number">IA</div><div class="stat-label">Vision automatica</div></div>
+      <div class="stat-card"><div class="stat-number">7</div><div class="stat-label">Dias planificados</div></div>
+    </div>
+  </div>
+
+  <div class="wardrobe-section">
+    <p class="section-label reveal">Todo lo que incluye</p>
+    <h2 class="section-title reveal">Abre cada cajon</h2>
+    <p class="section-desc reveal">Toca para explorar las funcionalidades de Shade, como si abrieras tu propio armario.</p>
+
+    <div class="wardrobe" id="wardrobe">
+
+      <div class="drawer">
+        <div class="drawer-header">
+          <div class="drawer-icon">&#x1F457;</div>
+          <div><div class="drawer-title">Armario Digital</div><div class="drawer-subtitle">Inventario rapido e inteligente</div></div>
+          <svg class="drawer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="drawer-body"><div class="drawer-inner">
+          <p>Anade prendas en segundos con atributos detallados: marca, talla, precio, estilo y color. Mas de <strong>100 categorias predefinidas</strong> o crea las tuyas propias.</p>
+          <p>Sistema de Favoritos y Papelera para gestionar piezas sin perder estadisticas. Control total sobre tu armario con Core Data.</p>
+          <div class="feature-pills">
+            <span class="pill">100+ categorias</span>
+            <span class="pill">Papelera inteligente</span>
+            <span class="pill">Estadisticas de uso</span>
+            <span class="pill">Valor del armario</span>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="drawer">
+        <div class="drawer-header">
+          <div class="drawer-icon">&#x2728;</div>
+          <div><div class="drawer-title">IA y Vision Artificial</div><div class="drawer-subtitle">Tecnologia Apple en tu armario</div></div>
+          <svg class="drawer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="drawer-body"><div class="drawer-inner">
+          <p><strong>Borrador Magico:</strong> elimina fondos automaticamente con la tecnologia Vision de Apple para fotos profesionales al instante.</p>
+          <p><strong>Analisis automatico:</strong> la IA detecta la categoria y el color dominante de cada prenda usando MobileNetV2 nada mas fotografiarla.</p>
+          <p><strong>Test de cromotipo:</strong> analisis facial para determinar tu estacion de color y sugerirte la paleta que mejor combina con tu tono de piel.</p>
+          <div class="feature-pills">
+            <span class="pill">Vision API</span>
+            <span class="pill">MobileNetV2</span>
+            <span class="pill">Borrador de fondo</span>
+            <span class="pill">Cromotipo facial</span>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="drawer">
+        <div class="drawer-header">
+          <div class="drawer-icon">&#x1F3A8;</div>
+          <div><div class="drawer-title">Creacion de Outfits</div><div class="drawer-subtitle">Combina y visualiza looks</div></div>
+          <svg class="drawer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="drawer-body"><div class="drawer-inner">
+          <p><strong>Creador interactivo:</strong> selecciona prendas de un dock y visualiza combinaciones antes de decidirte. Tan intuitivo como vestirse de verdad.</p>
+          <p><strong>Algoritmo de compatibilidad:</strong> puntuacion numerica de armonia de colores y estilos para que nunca salgas con un conjunto que no pega.</p>
+          <div class="feature-pills">
+            <span class="pill">Compatibilidad de colores</span>
+            <span class="pill">Dock de prendas</span>
+            <span class="pill">Vista previa de looks</span>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="drawer">
+        <div class="drawer-header">
+          <div class="drawer-icon">&#x1F4C5;</div>
+          <div><div class="drawer-title">Planificador Semanal</div><div class="drawer-subtitle">7 dias con estilo asegurado</div></div>
+          <svg class="drawer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="drawer-body"><div class="drawer-inner">
+          <p>Organiza looks para toda la semana, de forma manual o automatica. El sistema de <strong>rotacion de armario</strong> bloquea prendas recien usadas para fomentar variedad de estilo.</p>
+          <p><strong>Integracion meteorologica:</strong> sugerencias de ropa en tiempo real segun la temperatura y el clima de tu ciudad.</p>
+          <div class="feature-pills">
+            <span class="pill">Planificacion automatica</span>
+            <span class="pill">Rotacion de armario</span>
+            <span class="pill">Clima en tiempo real</span>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="drawer">
+        <div class="drawer-header">
+          <div class="drawer-icon">&#x1F916;</div>
+          <div><div class="drawer-title">Asistente con Personalidad</div><div class="drawer-subtitle">El critico de moda que necesitabas</div></div>
+          <svg class="drawer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="drawer-body"><div class="drawer-inner">
+          <p>Un asistente IA interactivo con <strong>personalidad sarcastica</strong> que juzga tu estilo con humor, reacciona a toques y gestos, y nunca te da respuestas aburridas.</p>
+          <p><strong>Planificador de viajes:</strong> calcula el volumen y peso del equipaje por destino para saber si tu ropa cabe en el equipaje de mano.</p>
+          <div class="feature-pills">
+            <span class="pill">IA sarcastica</span>
+            <span class="pill">Gestos interactivos</span>
+            <span class="pill">Planificador de maleta</span>
+          </div>
+        </div></div>
+      </div>
+
+      <div class="drawer">
+        <div class="drawer-header">
+          <div class="drawer-icon">&#x1F310;</div>
+          <div><div class="drawer-title">Comunidad y Social</div><div class="drawer-subtitle">Comparte tu estilo con el mundo</div></div>
+          <svg class="drawer-chevron" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round"><polyline points="6 9 12 15 18 9"/></svg>
+        </div>
+        <div class="drawer-body"><div class="drawer-inner">
+          <p>Publica y comparte outfits en un feed mixto con contenido global y de amigos gracias a la integracion con <strong>CloudKit</strong>. Da likes, comenta y sigue a otros usuarios en un entorno moderado.</p>
+          <p>Sincronizacion iCloud para que tu armario viaje contigo a traves de todos tus dispositivos Apple.</p>
+          <div class="feature-pills">
+            <span class="pill">Feed social</span>
+            <span class="pill">CloudKit</span>
+            <span class="pill">iCloud Sync</span>
+            <span class="pill">Entorno moderado</span>
+          </div>
+        </div></div>
+      </div>
+
+    </div>
+  </div>
+
+  <div class="final-cta">
+    <div class="cta-card reveal">
+      <h2 class="cta-card-title">Tu armario lleva tiempo esperandote.</h2>
+      <p class="cta-card-desc">Descarga Shade gratis y empieza a organizar, combinar y brillar. Requiere iOS 18.2.</p>
+      <a class="cta-primary" href="https://apps.apple.com/es/app/shade/id6754871627" target="_blank" rel="noopener" style="display:inline-flex;">
+        <svg viewBox="0 0 24 24" style="width:22px;height:22px;fill:currentColor"><path d="M18.71 19.5c-.83 1.24-1.71 2.45-3.05 2.47-1.34.03-1.77-.79-3.29-.79-1.53 0-2 .77-3.27.82-1.31.05-2.3-1.32-3.14-2.53C4.25 17 2.94 12.45 4.7 9.39c.87-1.52 2.43-2.48 4.12-2.51 1.28-.02 2.5.87 3.29.87.78 0 2.26-1.07 3.8-.91.65.03 2.47.26 3.64 1.98-.09.06-2.17 1.28-2.15 3.81.03 3.02 2.65 4.03 2.68 4.04-.03.07-.42 1.44-1.38 2.83M13 3.5c.73-.83 1.94-1.46 2.94-1.5.13 1.17-.34 2.35-1.04 3.19-.69.85-1.83 1.51-2.95 1.42-.15-1.15.41-2.35 1.05-3.11z"/></svg>
+        Descargar en App Store
+      </a>
+      <div class="cta-badge">Gratis &middot; iPhone, iPad, Mac, Apple Vision</div>
+    </div>
+  </div>
+
+  <footer>
+    <p style="margin-bottom:8px;">
+      &copy; 2025 Javier Barbero &nbsp;&middot;&nbsp;
+      <a href="mailto:javi@javib.es">Contacto</a> &nbsp;&middot;&nbsp;
+      <a href="/privacy.html">Privacidad</a>
+    </p>
+    <p>Hecho con amor en Santander.</p>
+  </footer>
+
+</div>
+
+<script>
+  const drawers = document.querySelectorAll('.drawer');
+  drawers.forEach(drawer => {
+    drawer.querySelector('.drawer-header').addEventListener('click', () => {
+      const isOpen = drawer.classList.contains('open');
+      drawers.forEach(d => d.classList.remove('open'));
+      if (!isOpen) drawer.classList.add('open');
+    });
+  });
+  const revealEls = document.querySelectorAll('.reveal');
+  const observer = new IntersectionObserver(entries => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) { entry.target.classList.add('visible'); observer.unobserve(entry.target); }
+    });
+  }, { threshold: 0.12 });
+  revealEls.forEach(el => observer.observe(el));
+</script>
 </body>
 </html>
