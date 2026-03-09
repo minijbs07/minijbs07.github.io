@@ -237,6 +237,26 @@
       font-weight: 600; color: var(--blue-pale);
     }
 
+    /* SCREENSHOTS */
+    .screenshots-section { padding: 60px 24px 80px; }
+    .screenshots-section .section-label { font-size: 12px; font-weight: 700; letter-spacing: 0.12em; color: var(--blue-mid); text-transform: uppercase; text-align: center; margin-bottom: 12px; }
+    .screenshots-section .section-title { font-size: clamp(28px, 6vw, 42px); font-weight: 800; text-align: center; background: linear-gradient(135deg, #fff 0%, #a5c8ff 100%); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; margin-bottom: 12px; }
+    .screenshots-section .section-desc { text-align: center; color: var(--text-muted); font-size: 16px; max-width: 480px; margin: 0 auto 48px; line-height: 1.6; }
+    .screenshots-trio { display: flex; gap: 0; justify-content: center; align-items: flex-end; max-width: 780px; margin: 0 auto 64px; }
+    .screenshots-trio .shot { flex: 1; overflow: hidden; border-radius: 0; transition: transform 0.4s ease, box-shadow 0.4s ease; }
+    .screenshots-trio .shot:first-child { border-radius: 24px 0 0 24px; }
+    .screenshots-trio .shot:last-child  { border-radius: 0 24px 24px 0; }
+    .screenshots-trio .shot:hover { transform: translateY(-8px) scale(1.02); z-index: 2; box-shadow: 0 32px 64px rgba(0,0,0,0.6); }
+    .screenshots-trio .shot img { width: 100%; display: block; filter: brightness(0.95); transition: filter 0.3s; }
+    .screenshots-trio .shot:hover img { filter: brightness(1.05); }
+    .trio-caption { text-align: center; color: var(--text-muted); font-size: 13px; margin-bottom: 56px; opacity: 0.7; }
+    .screenshots-row { display: flex; gap: 20px; justify-content: center; align-items: flex-start; max-width: 720px; margin: 0 auto; flex-wrap: wrap; }
+    .screenshots-row .shot-card { flex: 1; min-width: 180px; max-width: 220px; display: flex; flex-direction: column; align-items: center; gap: 14px; }
+    .screenshots-row .shot-card img { width: 100%; border-radius: 20px; box-shadow: 0 16px 48px rgba(0,0,0,0.55); transition: transform 0.4s ease, box-shadow 0.4s ease; }
+    .screenshots-row .shot-card:hover img { transform: translateY(-8px) scale(1.03); box-shadow: 0 28px 64px rgba(59,130,246,0.35), 0 16px 48px rgba(0,0,0,0.55); }
+    .shot-label { font-size: 13px; font-weight: 600; color: var(--text-muted); text-align: center; letter-spacing: 0.04em; }
+    @media (max-width: 600px) { .screenshots-trio { max-width: 100%; } .screenshots-row { gap: 12px; } .screenshots-row .shot-card { min-width: 140px; } }
+
     /* FINAL CTA */
     .final-cta { padding: 60px 24px 100px; text-align: center; }
     .cta-card {
@@ -418,6 +438,40 @@
         </div></div>
       </div>
 
+    </div>
+  </div>
+
+  <div class="screenshots-section">
+    <p class="section-label reveal">App Store</p>
+    <h2 class="screenshots-section section-title reveal">Asi se ve Shade</h2>
+    <p class="screenshots-section section-desc reveal">Tres pantallas que forman una sola vision. Tu armario digital, de un vistazo.</p>
+
+    <div class="screenshots-trio reveal">
+      <div class="shot">
+        <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/a2/f7/40/a2f740b7-220e-d43e-bfdc-d34e2e1e7a76/sh1.png/600x1300bb.webp" alt="Shade screenshot 1" loading="lazy" />
+      </div>
+      <div class="shot">
+        <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource211/v4/5b/aa/d4/5baad492-f031-2c5c-36db-d236d403e665/sh2.png/600x1300bb.webp" alt="Shade screenshot 2" loading="lazy" />
+      </div>
+      <div class="shot">
+        <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/f1/cf/52/f1cf5209-a4b5-04a0-2901-71b48eccd307/sh3.png/600x1300bb.webp" alt="Shade screenshot 3" loading="lazy" />
+      </div>
+    </div>
+    <p class="trio-caption reveal">Desliza para descubrir mas pantallas</p>
+
+    <div class="screenshots-row">
+      <div class="shot-card reveal">
+        <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/33/42/96/33429652-6949-900b-23b4-d77234361b50/p1.png/600x1300bb.webp" alt="Shade pantalla adicional 1" loading="lazy" />
+        <span class="shot-label">Armario</span>
+      </div>
+      <div class="shot-card reveal">
+        <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/50/84/9a/50849a54-f142-6a79-0751-df4239fb074e/p2.png/600x1300bb.webp" alt="Shade pantalla adicional 2" loading="lazy" />
+        <span class="shot-label">Outfits</span>
+      </div>
+      <div class="shot-card reveal">
+        <img src="https://is1-ssl.mzstatic.com/image/thumb/PurpleSource221/v4/cd/0d/cb/cd0dcb90-5ff7-d403-c682-bf1edfc70794/p3.png/600x1300bb.webp" alt="Shade pantalla adicional 3" loading="lazy" />
+        <span class="shot-label">Comunidad</span>
+      </div>
     </div>
   </div>
 
