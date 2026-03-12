@@ -1,0 +1,19 @@
+{
+  "applinks": {
+    "details": [{
+      "appID": "com.javi.TUSApp.R49R583W8Q",
+      "paths": [
+        "/bg/preview/*",
+        "/bg/*"
+      ]
+    }]
+  },
+  "appclips": {
+    "details": [{
+      "appID": "com.javi.TUSApp.BusGoClipApp.R49R583W8Q",
+      "paths": [
+        "/bg/preview/*"
+      ]
+    }]
+  }
+}
