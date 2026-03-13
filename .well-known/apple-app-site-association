@@ -1,27 +1,16 @@
 {
-    "applinks": {
-        "apps": [],
-        "details": [
-            {
-                "appID": "R49R583W8Q.com.javi.TUSApp",
-                "paths": [ 
-                    "/bg/preview",
-                    "/bg/preview/*",
-                    "/bg/tenfedata/*"
-                ]
-            }
+  "applinks": {
+    "details": [
+      {
+        "appID": "R49R583W8Q.com.javi.TUSApp",
+        "components": [
+          { "/": "/bg/preview/*" },
+          { "/": "/bg/tenfedata/*" }
         ]
-    },
-    "appclips": {
-        "apps": [],
-        "details": [
-            {
-                "appID": "R49R583W8Q.com.javi.TUSApp.Clip",
-                "paths": [ 
-                    "/bg/preview",
-                    "/bg/preview/*"
-                ]
-            }
-        ]
-    }
+      }
+    ]
+  },
+  "appclips": {
+    "apps": ["R49R583W8Q.com.javi.TUSApp.Clip"]
+  }
 }
